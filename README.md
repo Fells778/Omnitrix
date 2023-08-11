@@ -1,5 +1,20 @@
 # Omnitrix 
 Inspirada no adorado Omnitrix da série Ben 10.
-<p align="center">
-  👩‍💻  Stack: <strong>Backend Java, Frontend JavaScript, HTML, CSS and React.</strong>
-</p>
+
+
+
+
+
+### Prévia: 
+<div>
+  <img src="" width="250px"/>
+  <img src="" width="250px"/>
+  <img src="" width="250px"/>
+</div>
+
+
+
+
+
+### 💻Tecnologias utilizadas:
+> Kotlin, Android Studio, Glide.
