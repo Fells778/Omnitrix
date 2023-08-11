@@ -11,7 +11,8 @@ import kotlin.random.Random
 class MainActivity : Activity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var mediaPlayer: MediaPlayer
+    private var resetClick = 0
     private val listAliens = listOf(
         R.drawable.image_removebg_preview_1_,
         R.drawable.image_removebg_preview_2_,
@@ -31,6 +32,7 @@ class MainActivity : Activity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         initViews()
+        initPlaySound()
 
         setContentView(binding.root)
     }
@@ -43,10 +45,18 @@ class MainActivity : Activity() {
     private fun clickNextAlien() {
         binding.apply {
             imageMain.setOnClickListener {
-                initGif()
-                android.os.Handler(Looper.getMainLooper()).postDelayed({
-                    imageMain.setImageResource(randomAlien())
-                }, 1000)
+                resetClick++
+                if (resetClick >= 11) {
+                    noBatterySound()
+                    imageMain.setImageResource(R.drawable.image_photoroom_png_photoroom)
+                    resetClick = 0
+                } else {
+                    initGif()
+                    android.os.Handler(Looper.getMainLooper()).postDelayed({
+                        imageMain.setImageResource(randomAlien())
+                    }, 1000)
+                }
+                mediaPlayer.start()
             }
         }
     }
@@ -56,14 +66,22 @@ class MainActivity : Activity() {
             .asGif()
             .load(R.drawable.omnitrix_strange)
             .into(binding.imageMain)
-        playSound()
+        selectAlienSound()
     }
 
-    private fun playSound() {
-        if (mediaPlayer == null)
-            mediaPlayer = MediaPlayer.create(this, R.raw.som_do_omnitrix)
+    private fun initPlaySound() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.som_do_omnitrix)
+        mediaPlayer.start()
+    }
 
-        mediaPlayer?.start()
+    private fun selectAlienSound() {
+        mediaPlayer.release()
+        mediaPlayer = MediaPlayer.create(this, R.raw.omnitrix_select_alien)
+    }
+
+    private fun noBatterySound() {
+        mediaPlayer.release()
+        mediaPlayer = MediaPlayer.create(this, R.raw.omnitrix_no_battery)
     }
 
     private fun randomAlien(): Int {
@@ -72,8 +90,7 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
-        mediaPlayer?.release()
-        mediaPlayer = null
         super.onDestroy()
+        mediaPlayer.release()
     }
 }
