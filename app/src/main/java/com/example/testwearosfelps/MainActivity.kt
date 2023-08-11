@@ -60,9 +60,9 @@ class MainActivity : Activity() {
     }
 
     private fun playSound() {
-        if (mediaPlayer == null) {
+        if (mediaPlayer == null)
             mediaPlayer = MediaPlayer.create(this, R.raw.som_do_omnitrix)
-        }
+
         mediaPlayer?.start()
     }
 
